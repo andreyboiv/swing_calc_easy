@@ -50,12 +50,6 @@ public class InitialCalcGUI {
     private CalcOperatoinsButtons multiplicationButton;
     private CalcOperatoinsButtons divisionBuuton;
 
-    private JMenuBar mb;
-    private JMenu menu1;
-    private List<JMenuItem> jMenuItems;
-
-    private List<String> skins;
-
     public static void main(String[] args) {
 
         InitialCalcGUI caldGUI = new InitialCalcGUI();
@@ -63,7 +57,6 @@ public class InitialCalcGUI {
         caldGUI.initialJFrame();
 
         caldGUI.addJMenu();
-        caldGUI.addJMenuListerners();
 
         caldGUI.initialJPanel();
         caldGUI.initialJTextFields();
@@ -79,7 +72,7 @@ public class InitialCalcGUI {
         caldGUI.setMainFrameVisible();
     }
 
-    private void addJMenuListerners() {
+    private void addJMenuListerners(List<JMenuItem> jMenuItems) {
         MenuSkinsChangeL menuL = new MenuSkinsChangeL(this.mainFrame);
         for (JMenuItem jMenuItem : jMenuItems) {
             jMenuItem.addActionListener(menuL);
@@ -87,11 +80,11 @@ public class InitialCalcGUI {
     }
 
     private void addJMenu() {
-        mb = new JMenuBar();
-        menu1 = new JMenu("File");
+        JMenuBar mb = new JMenuBar();
+        JMenu menu1 = new JMenu("File");
 
         JMenu submenuSkins = new JMenu("Skins");
-        skins = new ArrayList();
+        List<String> skins = new ArrayList();
 
         Reflections reflections = new Reflections("com.jtattoo.plaf");
         Set<Class<? extends AbstractLookAndFeel>> classes = reflections.getSubTypesOf(com.jtattoo.plaf.AbstractLookAndFeel.class);
@@ -99,7 +92,7 @@ public class InitialCalcGUI {
             skins.add(aClass.getName());
         }
 
-        jMenuItems = new ArrayList<>();
+        List<JMenuItem> jMenuItems = new ArrayList<>();
 
         for (String skinFullName : skins) {
             JMenuItem jMenuItem = new JMyMenuItem(
@@ -108,6 +101,8 @@ public class InitialCalcGUI {
             jMenuItems.add(jMenuItem);
             submenuSkins.add(jMenuItem);
         }
+
+        addJMenuListerners(jMenuItems);
 
         JMenuItem itemExit = new JMenuItem("Exit");
         itemExit.addActionListener(new ActionListener() {
